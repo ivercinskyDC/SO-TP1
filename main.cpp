@@ -1,6 +1,7 @@
 #include "ConcurrentHashMap.hpp"
 #include <string>
-
+#include <iostream>
+#include <cstdlib>
 using namespace std;
 int main() {
     ConcurrentHashMap* map = new ConcurrentHashMap();
@@ -21,6 +22,9 @@ int main() {
 
     pair< string, int >* maximo = map->maximum(1);
     cout << maximo->first << ", " << maximo->second << endl;
+
+    list<string> l = { "corpus-0", "corpus-1", "corpus-2", "corpus-3", "corpus-4" };
+    map->count_words(l);
     delete map;
 
 }

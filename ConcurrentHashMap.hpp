@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include <iostream>
+#include <pthread.h>
 #define SIZE 26
 #define ASCII_OFFSET 97
 class ConcurrentHashMap {
@@ -25,6 +26,13 @@ class ConcurrentHashMap {
             return it;
          }
 
+         static void *count_words_t(void *args) {
+             std::string arch = *((std::string*) args);
+             std::cout<<"Creando CHM en otro thread"<<std::endl;
+             std::cout<<"Fin de CHM en otro thread"<<std::endl;
+             return NULL;
+         }
+
 
     public:
         Lista<std::pair<std::string,int>* >* map[SIZE];
@@ -40,7 +48,11 @@ class ConcurrentHashMap {
         }
 
         static ConcurrentHashMap count_words(std::list<std::string> archs) {
-            return ConcurrentHashMap();
+            pthread_t pid;
+            pthread_create(&pid,NULL,count_words_t,&archs.front());
+            ConcurrentHashMap map = ConcurrentHashMap();
+            pthread_join(pid,NULL);
+            return map;
         }
 
         static ConcurrentHashMap count_words(unsigned int n, std::list<std::string> archs) {
