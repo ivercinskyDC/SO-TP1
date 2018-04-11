@@ -10,7 +10,7 @@
 #define ASCII_OFFSET 97
 class ConcurrentHashMap {
     public:
-    Lista<std::pair<std::string,int> >* map[SIZE];
+    Lista<std::pair<std::string,int> *>* map[SIZE];
     ConcurrentHashMap();
     static ConcurrentHashMap count_words(std::string arch);
     static ConcurrentHashMap count_words(std::list<std::string> archs);
@@ -23,19 +23,21 @@ class ConcurrentHashMap {
     
     private:
         
-        Lista< std::pair < std::string,int > >* getLista(std::string key) {
+
+        pthread_mutex_t addAndIncMutex;
+        Lista< std::pair < std::string,int >* >* getLista(std::string key) {
             char firstLetter = key.at(0);
             firstLetter = std::tolower(firstLetter, std::locale());
             //std::cout << "Adding: " << firstLetter << std::endl;
             int asciiCode = firstLetter;
             //std::cout << "ASCII CODE: " << asciiCode << std::endl;
-            Lista< std::pair < std::string,int > >* listOfLetter = map[asciiCode-ASCII_OFFSET];
+            Lista< std::pair < std::string,int >* >* listOfLetter = map[asciiCode-ASCII_OFFSET];
             return listOfLetter;
         }
 
-         Lista< std::pair < std::string,int > >::Iterador getListIt(int mapPos) {
-            Lista< std::pair < std::string,int > > * list = map[mapPos];
-            Lista< std::pair < std::string,int > >::Iterador it = list->CrearIt();
+         Lista< std::pair < std::string,int >* >::Iterador getListIt(int mapPos) {
+            Lista< std::pair < std::string,int >* > * list = map[mapPos];
+            Lista< std::pair < std::string,int >* >::Iterador it = list->CrearIt();
             return it;
          }
 
