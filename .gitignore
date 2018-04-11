@@ -4,3 +4,4 @@ test-5
 main
 corpus*
 corpus.awk
+*.o
