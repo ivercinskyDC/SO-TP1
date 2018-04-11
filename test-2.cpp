@@ -12,7 +12,7 @@ int main(void) {
 	for (i = 0; i < 26; i++) {
 		for (auto it = h.map[i]->CrearIt(); it.HaySiguiente(); it.Avanzar()) {
 			auto t = it.Siguiente();
-			cout << t->first << " " << t->second << endl;
+			cout << t.first << " " << t.second << endl;
 		}
 	}
 
