@@ -30,7 +30,7 @@ public:
 		/* Completar. Debe ser atómico. */
 		Nodo* _new_node = new Nodo(val);
 		_new_node->_next = _head.load();
-		while(!_head.compare_exchange_weak(_new_node->_next, _new_node));
+		while(!_head.compare_exchange_strong(_new_node->_next, _new_node));
 	}
 
 	T& front() const {

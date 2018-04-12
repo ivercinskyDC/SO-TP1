@@ -12,10 +12,19 @@ ConcurrentHashMap::ConcurrentHashMap() {
         
 
 ConcurrentHashMap ConcurrentHashMap::count_words(std::list<std::string> archs) {
-    pthread_t pid;
-    pthread_create(&pid,NULL,count_words_t,&archs.front());
+    int n_threads = archs.size();
+    pthread_t threads[n_threads];
     ConcurrentHashMap map = ConcurrentHashMap();
-    pthread_join(pid,NULL);
+    int i = 0;
+    for(std::list<std::string>::iterator it = archs.begin(); it != archs.end(); ++it){
+        pthread_create(&threads[i],NULL,count_words_t,&archs.front());
+        i++;
+    }
+    i = 0;
+    for(std::list<std::string>::iterator it = archs.begin(); it != archs.end(); ++it){
+        pthread_join(threads[i],NULL);
+        i++;
+    }
     return map;
 }
 
@@ -25,28 +34,35 @@ ConcurrentHashMap ConcurrentHashMap::count_words(unsigned int n, std::list<std::
 
 void ConcurrentHashMap::addAndInc(std::string key) {
         ///std::cout << "Tratando de Agregar o Incrementar: " << *key << std::endl;
+    //pthread_mutex_lock(&addAndIncMutex);
     Lista< std::pair < std::string,int >* >* listOfLetter=getLista(key);
     //std::cout << "Lista: " << listOfLetter << std::endl;
     Lista< std::pair < std::string,int >* >::Iterador it = listOfLetter->CrearIt();
     //std::cout << "Iterador: " << listOfLetter << std::endl;
+    //NO HAY QUE USAR UN ITERADOR. YA QUE ES UNA FOTO DE LA LISTA EN UN MOMENTO DADO.
+    
     while(it.HaySiguiente()){
         std::pair< std::string, int>* sig = it.Siguiente();
         if(sig->first.compare(key)==0) {
                 //std::cout << "Incrementando: " << *key << ": "<< sig->second<< std::endl;
-                //hay que usar un semaforo para el incrementar el second++
-                pthread_mutex_lock(&addAndIncMutex);
+                
+                
                 sig->second++;
-                pthread_mutex_unlock(&addAndIncMutex);
+                
                 return;
         }
         it.Avanzar();
     }
+    
     //si llego aca es porque no hay una entrada con esa key. Entonces la agregamos.
     //std::cout << "Agregando: " << *key << std::endl;
+
     std::pair< std::string, int>* nuevo = new std::pair< std::string, int>();
     nuevo->first = key;
     nuevo->second = 1;
     listOfLetter->push_front(nuevo);
+    //pthread_mutex_unlock(&addAndIncMutex);
+    
 }
 
 bool ConcurrentHashMap::member(std::string key) {
