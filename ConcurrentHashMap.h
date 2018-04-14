@@ -23,13 +23,17 @@ class ConcurrentHashMap {
     
     private:
         
+        pthread_mutex_t addAndIncMutex[SIZE];
 
-        pthread_mutex_t addAndIncMutex;
-        Lista< std::pair < std::string,int >* >* getLista(std::string key) {
+        int getHashKey(std::string key) {
             char firstLetter = key.at(0);
-            firstLetter = std::tolower(firstLetter, std::locale());
-            //std::cout << "Adding: " << firstLetter << std::endl;
-            int asciiCode = firstLetter;
+            int asciiCode = std::tolower(firstLetter, std::locale());
+            return asciiCode;
+        }
+
+        
+        Lista< std::pair < std::string,int >* >* getLista(std::string key) {
+            int asciiCode = getHashKey(key);
             //std::cout << "ASCII CODE: " << asciiCode << std::endl;
             Lista< std::pair < std::string,int >* >* listOfLetter = map[asciiCode-ASCII_OFFSET];
             return listOfLetter;
@@ -39,6 +43,16 @@ class ConcurrentHashMap {
             Lista< std::pair < std::string,int >* > * list = map[mapPos];
             Lista< std::pair < std::string,int >* >::Iterador it = list->CrearIt();
             return it;
+         }
+
+         void lockAddAndIncMutex(std::string key) {
+            int asciiCode = getHashKey(key);
+            pthread_mutex_lock(&addAndIncMutex[asciiCode-ASCII_OFFSET]);
+         } 
+
+         void unlockAddAndIncMutex(std::string key) {
+            int asciiCode = getHashKey(key);
+            pthread_mutex_unlock(&addAndIncMutex[asciiCode-ASCII_OFFSET]);   
          }
 
          static void *count_words_t(void *args) {

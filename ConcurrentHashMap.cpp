@@ -4,8 +4,8 @@ ConcurrentHashMap::ConcurrentHashMap() {
     //std::cout << "Builing Concurrent Hash Map"<<std::endl;
     for(int i = 0; i < SIZE; i++) {
         map[i] = new Lista< std::pair < std::string, int >* >();
+        pthread_mutex_init(&addAndIncMutex[i],NULL);
     }
-    pthread_mutex_init(&addAndIncMutex,NULL);
     
 }
 
@@ -33,22 +33,23 @@ ConcurrentHashMap ConcurrentHashMap::count_words(unsigned int n, std::list<std::
 }
 
 void ConcurrentHashMap::addAndInc(std::string key) {
-        ///std::cout << "Tratando de Agregar o Incrementar: " << *key << std::endl;
-    //pthread_mutex_lock(&addAndIncMutex);
+    ///std::cout << "Tratando de Agregar o Incrementar: " << *key << std::endl;
+    //UN ARRAY DE MUTEX, UN POR CADA LETRA.
+    lockAddAndIncMutex(key);
     Lista< std::pair < std::string,int >* >* listOfLetter=getLista(key);
     //std::cout << "Lista: " << listOfLetter << std::endl;
     Lista< std::pair < std::string,int >* >::Iterador it = listOfLetter->CrearIt();
     //std::cout << "Iterador: " << listOfLetter << std::endl;
-    //NO HAY QUE USAR UN ITERADOR. YA QUE ES UNA FOTO DE LA LISTA EN UN MOMENTO DADO.
+    
     
     while(it.HaySiguiente()){
         std::pair< std::string, int>* sig = it.Siguiente();
         if(sig->first.compare(key)==0) {
                 //std::cout << "Incrementando: " << *key << ": "<< sig->second<< std::endl;
                 
-                
+                //pthread_mutex_lock(&addAndIncMutex);
                 sig->second++;
-                
+                unlockAddAndIncMutex(key);
                 return;
         }
         it.Avanzar();
@@ -61,7 +62,7 @@ void ConcurrentHashMap::addAndInc(std::string key) {
     nuevo->first = key;
     nuevo->second = 1;
     listOfLetter->push_front(nuevo);
-    //pthread_mutex_unlock(&addAndIncMutex);
+    unlockAddAndIncMutex(key);
     
 }
 
@@ -103,8 +104,8 @@ ConcurrentHashMap::~ConcurrentHashMap() {
     std::cout << "Destroying Concurrent Hash Map"<<std::endl;
     for(int i = 0; i<SIZE; i++) {
         map[i]->~Lista();
+        pthread_mutex_destroy(&addAndIncMutex[i]);
     }
-    pthread_mutex_destroy(&addAndIncMutex);
 }
 
 ConcurrentHashMap ConcurrentHashMap::count_words(std::string arch) {

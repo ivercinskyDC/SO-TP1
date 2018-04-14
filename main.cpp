@@ -8,9 +8,9 @@ pthread_mutex_t semaforo;
 void *addWord(void* word){
 
     string* w = static_cast<string*>(word);
-    pthread_mutex_lock(&semaforo);
+    //pthread_mutex_lock(&semaforo);
     map.addAndInc(*w);
-    pthread_mutex_unlock(&semaforo);
+    //pthread_mutex_unlock(&semaforo);
     pthread_exit(0);
 }
 
