@@ -24,7 +24,14 @@ int main() {
     pthread_mutex_init(&semaforo, NULL);
     pthread_t threads[n_threads];
     for(int i = 0; i<n_threads; i++){
-        pthread_create(&threads[i],NULL,addWord,static_cast<void*>(new string("Pepe")));
+        if(i % 3 == 0) {
+            pthread_create(&threads[i],NULL,addWord,static_cast<void*>(new string("Pepe")));
+        } else if (i % 3 == 1) {
+            pthread_create(&threads[i],NULL,addWord,static_cast<void*>(new string("Bosa")));    
+        } else {
+            pthread_create(&threads[i],NULL,addWord,static_cast<void*>(new string("Titere")));
+        }
+        
     }
     for(int i = 0; i<n_threads; i++){
         pthread_join(threads[i],NULL);
@@ -40,4 +47,7 @@ int main() {
 		}
     }
 
+    ConcurrentHashMap cp = ConcurrentHashMap(2,{"corpus","corpus"});
+
+    
 }

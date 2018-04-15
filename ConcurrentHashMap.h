@@ -6,18 +6,21 @@
 #include <iostream>
 #include <pthread.h>
 #include <fstream>
+
 #define SIZE 26
 #define ASCII_OFFSET 97
 class ConcurrentHashMap {
     public:
     Lista<std::pair<std::string,int> *>* map[SIZE];
     ConcurrentHashMap();
+    ConcurrentHashMap(std::string arch);
+    ConcurrentHashMap(unsigned int nt, std::list<std::string> archs);
     static ConcurrentHashMap count_words(std::string arch);
     static ConcurrentHashMap count_words(std::list<std::string> archs);
     static ConcurrentHashMap count_words(unsigned int n, std::list<std::string> archs);
     ~ConcurrentHashMap();
     std::pair< std::string, int > maximum(unsigned int nt);
-    std::pair< std::string, unsigned int > maximum(unsigned int p_archivos, unsigned int p_maximos, std::list<std::string> archs);
+    static std::pair< std::string, unsigned int > maximum(unsigned int p_archivos, unsigned int p_maximos, std::list<std::string> archs);
     bool member(std::string key);
     void addAndInc(std::string key);
     
@@ -55,14 +58,7 @@ class ConcurrentHashMap {
             pthread_mutex_unlock(&addAndIncMutex[asciiCode-ASCII_OFFSET]);   
          }
 
-         static void *count_words_t(void *args) {
-             std::string arch = *((std::string*) args);
-             std::cout<<"Creando CHM en otro thread"<<std::endl;
-             std::cout<<"Fin de CHM en otro thread"<<std::endl;
-             return NULL;
-         }
-
+          
     
 };
-
 #endif /* CONCURRENT_HASH_MAP_H__ */

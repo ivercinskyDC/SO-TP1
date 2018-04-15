@@ -20,7 +20,7 @@ ListaAtomica.o: ListaAtomica.hpp
 ConcurrentHashMap.o:ConcurrentHashMap.cpp
 	$(CXX) $(CXXFLAGS) -c $<
 
-main: clean ConcurrentHashMap.o
+main: clean $(OBJ) main.cpp
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) main.cpp $(OBJ) $(LDLIBS) -o $@ 
 
 $(BIN): ListaAtomica.hpp
