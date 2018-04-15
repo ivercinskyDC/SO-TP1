@@ -22,39 +22,40 @@ class ConcurrentHashMap {
     std::pair< std::string, int > maximum(unsigned int nt);
     static std::pair< std::string, unsigned int > maximum(unsigned int p_archivos, unsigned int p_maximos, std::list<std::string> archs);
     bool member(std::string key);
-    void addAndInc(std::string key);
+    void add_and_inc(std::string key);
+    void process_file(std::string arch);
     
     private:
         
         pthread_mutex_t addAndIncMutex[SIZE];
 
-        int getHashKey(std::string key) {
+        int get_hash_key(std::string key) {
             char firstLetter = key.at(0);
             int asciiCode = std::tolower(firstLetter, std::locale());
             return asciiCode;
         }
 
         
-        Lista< std::pair < std::string,int >* >* getLista(std::string key) {
-            int asciiCode = getHashKey(key);
+        Lista< std::pair < std::string,int >* >* get_lista(std::string key) {
+            int asciiCode = get_hash_key(key);
             //std::cout << "ASCII CODE: " << asciiCode << std::endl;
             Lista< std::pair < std::string,int >* >* listOfLetter = map[asciiCode-ASCII_OFFSET];
             return listOfLetter;
         }
 
-         Lista< std::pair < std::string,int >* >::Iterador getListIt(int mapPos) {
+         Lista< std::pair < std::string,int >* >::Iterador get_list_it(int mapPos) {
             Lista< std::pair < std::string,int >* > * list = map[mapPos];
             Lista< std::pair < std::string,int >* >::Iterador it = list->CrearIt();
             return it;
          }
 
-         void lockAddAndIncMutex(std::string key) {
-            int asciiCode = getHashKey(key);
+         void lock_add_and_inc_mutex(std::string key) {
+            int asciiCode = get_hash_key(key);
             pthread_mutex_lock(&addAndIncMutex[asciiCode-ASCII_OFFSET]);
          } 
 
-         void unlockAddAndIncMutex(std::string key) {
-            int asciiCode = getHashKey(key);
+         void unlock_add_and_inc_mutex(std::string key) {
+            int asciiCode = get_hash_key(key);
             pthread_mutex_unlock(&addAndIncMutex[asciiCode-ASCII_OFFSET]);   
          }
 

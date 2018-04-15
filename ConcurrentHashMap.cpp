@@ -1,5 +1,8 @@
 #include "ConcurrentHashMap.h"
 #include "Utils.h"
+#include <atomic>
+#include <vector>
+
 ConcurrentHashMap::ConcurrentHashMap() {
     //std::cout << "Builing Concurrent Hash Map"<<std::endl;
     for(int i = 0; i < SIZE; i++) {
@@ -10,6 +13,45 @@ ConcurrentHashMap::ConcurrentHashMap() {
 }
 
 ConcurrentHashMap::ConcurrentHashMap(std::string arch) : ConcurrentHashMap() {
+    process_file(arch);
+}
+
+
+ConcurrentHashMap::ConcurrentHashMap(unsigned int nt, std::list<std::string> archs) : ConcurrentHashMap() {
+    std::atomic_int index(-1);
+    pthread_t threads[nt];
+    std::cout<<"Lanzando "<<nt<<" threads" <<std::endl;
+
+    std::vector<std::string> vector;
+    for (std::list<std::string>::iterator it=archs.begin(); it != archs.end(); ++it)
+        vector.push_back(*it);
+
+
+    for(int i = 0; i < nt; i++){
+        thread_struct data= {&vector, this, &index};
+        pthread_create(&threads[i],NULL,count_words_t,&data);
+    }
+
+    std::cout<<"Esperando "<<nt<<" threads" <<std::endl;
+    for(int i = 0; i < nt; i++){
+        pthread_join(threads[i],NULL);
+    }
+
+}
+
+ConcurrentHashMap ConcurrentHashMap::count_words(std::string arch) {
+    return ConcurrentHashMap(arch);
+}
+
+ConcurrentHashMap ConcurrentHashMap::count_words(std::list<std::string> archs) {
+    return ConcurrentHashMap(archs.size(),archs);
+}
+
+ConcurrentHashMap ConcurrentHashMap::count_words(unsigned int n, std::list<std::string> archs) {
+    return ConcurrentHashMap(n, archs);
+}
+
+void ConcurrentHashMap::process_file(std::string arch){
     std::ifstream farch;
     farch.open(arch);
     std::string line;
@@ -17,59 +59,19 @@ ConcurrentHashMap::ConcurrentHashMap(std::string arch) : ConcurrentHashMap() {
     {
         while ( getline (farch,line) )
         {
-            addAndInc(line);
+            add_and_inc(line);
         }
         farch.close();
     } else {
         std::cout<<"No lo pudo abrir"<<std::endl;
     }
 }
-ConcurrentHashMap::ConcurrentHashMap(unsigned int nt, std::list<std::string> archs) : ConcurrentHashMap() {
-    unsigned int n_threads = nt;
-    pthread_t threads[n_threads];
-    int i = 0;
-    std::cout<<"Lanzando "<<nt<<" threads" <<std::endl;
-    for(std::list<std::string>::iterator it = archs.begin(); it != archs.end(); ++it){
-        thread_struct data= {*it, this};
-        pthread_create(&threads[i],NULL,count_words_t,&data);
-        i++;
-    }
-    i = 0;
-    std::cout<<"Esperando "<<nt<<" threads" <<std::endl;
-    for(std::list<std::string>::iterator it = archs.begin(); it != archs.end(); ++it){
-        pthread_join(threads[i],NULL);
-        i++;
-    }
 
-}
-
-ConcurrentHashMap ConcurrentHashMap::count_words(std::list<std::string> archs) {
-    
-    /*int n_threads = archs.size();
-    pthread_t threads[n_threads];
-    ConcurrentHashMap map = ConcurrentHashMap();
-    int i = 0;
-    for(std::list<std::string>::iterator it = archs.begin(); it != archs.end(); ++it){
-        pthread_create(&threads[i],NULL,count_words_t,&archs.front());
-        i++;
-    }
-    i = 0;
-    for(std::list<std::string>::iterator it = archs.begin(); it != archs.end(); ++it){
-        pthread_join(threads[i],NULL);
-        i++;
-    }
-    
-    return map;*/
-    return ConcurrentHashMap(archs.size(),archs);
-}
-
-
-
-void ConcurrentHashMap::addAndInc(std::string key) {
+void ConcurrentHashMap::add_and_inc(std::string key) {
     ///std::cout << "Tratando de Agregar o Incrementar: " << *key << std::endl;
     //UN ARRAY DE MUTEX, UN POR CADA LETRA.
-    lockAddAndIncMutex(key);
-    Lista< std::pair < std::string,int >* >* listOfLetter=getLista(key);
+    lock_add_and_inc_mutex(key);
+    Lista< std::pair < std::string,int >* >* listOfLetter = get_lista(key);
     //std::cout << "Lista: " << listOfLetter << std::endl;
     Lista< std::pair < std::string,int >* >::Iterador it = listOfLetter->CrearIt();
     //std::cout << "Iterador: " << listOfLetter << std::endl;
@@ -82,7 +84,7 @@ void ConcurrentHashMap::addAndInc(std::string key) {
                 
                 //pthread_mutex_lock(&addAndIncMutex);
                 sig->second++;
-                unlockAddAndIncMutex(key);
+                unlock_add_and_inc_mutex(key);
                 return;
         }
         it.Avanzar();
@@ -95,12 +97,12 @@ void ConcurrentHashMap::addAndInc(std::string key) {
     nuevo->first = key;
     nuevo->second = 1;
     listOfLetter->push_front(nuevo);
-    unlockAddAndIncMutex(key);
+    unlock_add_and_inc_mutex(key);
     
 }
 
 bool ConcurrentHashMap::member(std::string key) {
-    Lista< std::pair < std::string,int >* >* listOfLetter=getLista(key);
+    Lista< std::pair < std::string,int >* >* listOfLetter = get_lista(key);
     //std::cout << "Lista: " << listOfLetter << std::endl;
     Lista< std::pair < std::string,int >* >::Iterador it = listOfLetter->CrearIt();
     //std::cout << "Iterador: " << listOfLetter << std::endl;
@@ -118,7 +120,7 @@ std::pair< std::string, int > ConcurrentHashMap::maximum(unsigned int nt) {
     std::pair< std::string, int> * maximo;
     int maxCount = 0;
     for(int i = 0; i<SIZE; i++) {
-        Lista< std::pair < std::string,int >* >::Iterador it = getListIt(i);
+        Lista< std::pair < std::string,int >* >::Iterador it = get_list_it(i);
         while(it.HaySiguiente()) {
             std::pair< std::string, int>* sig = it.Siguiente();
             if(sig->second > maxCount) {
@@ -139,15 +141,6 @@ ConcurrentHashMap::~ConcurrentHashMap() {
         map[i]->~Lista();
         pthread_mutex_destroy(&addAndIncMutex[i]);
     }
-}
-
-ConcurrentHashMap ConcurrentHashMap::count_words(std::string arch) {
-    return ConcurrentHashMap(arch);
-
-}
-
-ConcurrentHashMap ConcurrentHashMap::count_words(unsigned int n, std::list<std::string> archs) {
-    return ConcurrentHashMap(n, archs);
 }
 
 std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p_archivos, unsigned int p_maximos, std::list<std::string> archs) {
