@@ -9,7 +9,7 @@ void *addWord(void* word){
 
     string* w = static_cast<string*>(word);
     //pthread_mutex_lock(&semaforo);
-    map.addAndInc(*w);
+    map.add_and_inc(*w);
     //pthread_mutex_unlock(&semaforo);
     pthread_exit(0);
 }
@@ -47,7 +47,14 @@ int main() {
 		}
     }
 
-    ConcurrentHashMap cp = ConcurrentHashMap(2,{"corpus","corpus"});
-
-    
+    ConcurrentHashMap cp1 = ConcurrentHashMap("corpus");
+    cout<<"creo cp1"<<endl;
+    ConcurrentHashMap cp2 = ConcurrentHashMap(1,{"corpus","corpus"});
+    cout<<"creo cp2"<<endl;
+    for (int i = 0; i < 26; i++) {
+		for (auto it = cp2.map[i]->CrearIt(); it.HaySiguiente(); it.Avanzar()) {
+			auto t = it.Siguiente();
+			cout << char(i+97) << ": " << t->first << " " << t->second << endl;
+		}
+    }
 }

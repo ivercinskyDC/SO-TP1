@@ -17,7 +17,7 @@ all: $(BIN)
 ListaAtomica.o: ListaAtomica.hpp
 	$(CXX) $(CXXFLAGS) -c $<
 
-ConcurrentHashMap.o:ConcurrentHashMap.cpp
+ConcurrentHashMap.o:ConcurrentHashMap.cpp Utils.h
 	$(CXX) $(CXXFLAGS) -c $<
 
 main: clean $(OBJ) main.cpp

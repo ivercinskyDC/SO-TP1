@@ -18,25 +18,24 @@ ConcurrentHashMap::ConcurrentHashMap(std::string arch) : ConcurrentHashMap() {
 
 
 ConcurrentHashMap::ConcurrentHashMap(unsigned int nt, std::list<std::string> archs) : ConcurrentHashMap() {
-    std::atomic_int index(-1);
+    std::atomic<int> index(-1);
     pthread_t threads[nt];
-    std::cout<<"Lanzando "<<nt<<" threads" <<std::endl;
+    //std::cout<<"Lanzando "<<nt<<" threads" <<std::endl;
 
     std::vector<std::string> vector;
-    for (std::list<std::string>::iterator it=archs.begin(); it != archs.end(); ++it)
+    for (std::list<std::string>::iterator it=archs.begin(); it != archs.end(); ++it) {
         vector.push_back(*it);
-
+    }
 
     for(int i = 0; i < nt; i++){
         thread_struct data= {&vector, this, &index};
         pthread_create(&threads[i],NULL,count_words_t,&data);
     }
 
-    std::cout<<"Esperando "<<nt<<" threads" <<std::endl;
     for(int i = 0; i < nt; i++){
         pthread_join(threads[i],NULL);
     }
-
+    //std::cout<<"Esperando "<<nt<<std::endl;
 }
 
 ConcurrentHashMap ConcurrentHashMap::count_words(std::string arch) {
