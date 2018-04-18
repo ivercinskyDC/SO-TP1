@@ -28,7 +28,6 @@ void *count_words_t(void *args) {
     std::vector<std::string>* archs = data->archs;
     ConcurrentHashMap* map = data->map;
     std::atomic_int* index = data->index;
-    std::ifstream farch;
 
     int current = get_current(index, -1);
 
@@ -39,5 +38,28 @@ void *count_words_t(void *args) {
     
     pthread_exit(0);
 }
+
+void *maximum_t(void *args) {
+    thread_struct* data=(thread_struct*) args;
+    ConcurrentHashMap* map = data->map;
+    std::atomic_int* index = data->index;
+    std::vector<std::string>* archs = data->archs;
+
+    int current = get_current(index, -1);
+
+    while(current < archs->size()){
+        map->process_file(archs->at(current));
+        current = get_current(index, current);
+    }
+    
+    pthread_exit(0);
+}
+
+void *create_concurrent_hash_map(void * args){
+    // thread_struct* data=(thread_struct*) args;
+    // data->
+    pthread_exit(0);
+}
+
 
 #endif

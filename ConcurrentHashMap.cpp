@@ -133,6 +133,49 @@ std::pair< std::string, int > ConcurrentHashMap::maximum(unsigned int nt) {
     return *maximo;
 }
 
+std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p_archivos, unsigned int p_maximos,
+ std::list<std::string> archs) {
+    std::pair< std::string, int> * maximo;
+    std::atomic_int index(-1);
+    pthread_t threads_archivos[p_archivos];
+    ConcurrentHashMap* hashMaps[p_archivos]; //chequear si los inicializa creemos que no
+
+
+    std::vector<std::string> vector;
+    for (std::list<std::string>::iterator it=archs.begin(); it != archs.end(); ++it)
+        vector.push_back(*it);
+
+
+    for(int i = 0; i < p_archivos; i++){
+        thread_struct data= {&vector, hashMaps[i], &index};
+        pthread_create(&threads_archivos[i],NULL,create_concurrent_hash_map,&data);
+    }
+
+    for(int i = 0; i < p_archivos; i++){
+        pthread_join(threads_archivos[i],NULL);
+    }
+
+    ConcurrentHashMap hashMap = ConcurrentHashMap();
+    for(int k = 0; k<p_archivos;k++) {
+        for(int j = 0 ; j< SIZE; j++) {
+            Lista< std::pair < std::string,int >* >::Iterador it = hashMaps[j]->map[j]->CrearIt();
+            while(it.HaySiguiente()) {
+                std::pair<std::string,int> * elem = it.Siguiente();
+                hashMap.add_and_inc(elem->first);
+                it.Avanzar();
+            }
+        }
+    }
+
+    return hashMap.maximum(p_maximos);
+}
+
+std::pair< std::string, unsigned int > ConcurrentHashMap::concurrent_maximum(unsigned int p_archivos, unsigned int p_maximos,
+ std::list<std::string> archs) {
+    return ConcurrentHashMap(p_archivos,archs).maximum(p_maximos);
+}
+
+
         
 
 ConcurrentHashMap::~ConcurrentHashMap() {
@@ -142,12 +185,3 @@ ConcurrentHashMap::~ConcurrentHashMap() {
         pthread_mutex_destroy(&addAndIncMutex[i]);
     }
 }
-
-std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p_archivos, unsigned int p_maximos, std::list<std::string> archs) {
-    std::pair< std::string, unsigned int>  maximo;
-    maximo.first = "No implementado";
-    maximo.second = 1;
-    return maximo;
-}
-
-

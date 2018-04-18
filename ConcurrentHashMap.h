@@ -21,6 +21,7 @@ class ConcurrentHashMap {
     ~ConcurrentHashMap();
     std::pair< std::string, int > maximum(unsigned int nt);
     static std::pair< std::string, unsigned int > maximum(unsigned int p_archivos, unsigned int p_maximos, std::list<std::string> archs);
+    static std::pair< std::string, unsigned int > concurrent_maximum(unsigned int p_archivos, unsigned int p_maximos, std::list<std::string> archs);
     bool member(std::string key);
     void add_and_inc(std::string key);
     void process_file(std::string arch);
@@ -59,7 +60,6 @@ class ConcurrentHashMap {
             pthread_mutex_unlock(&addAndIncMutex[asciiCode-ASCII_OFFSET]);   
          }
 
-          
-    
+        
 };
 #endif /* CONCURRENT_HASH_MAP_H__ */
