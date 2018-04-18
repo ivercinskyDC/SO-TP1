@@ -19,8 +19,8 @@ int get_current(std::atomic_int* index, int current){
     while(!index->compare_exchange_strong(current, current+1)){
             current = index->load();
     };
-    current++;
-    return current;
+    //current++;
+    return *index;
 }
 
 void *count_words_t(void *args) {
@@ -30,8 +30,12 @@ void *count_words_t(void *args) {
     std::atomic_int* index = data->index;
 
     int current = get_current(index, -1);
+    
+    //std::cout<<"Getting: "<<current<<std::endl;
+    //std::cout<<"archs: "<<archs->size()<<std::endl;
 
     while(current < archs->size()){
+        //std::cout<<"Processing File: "<<archs->at(current)<<std::endl;
         map->process_file(archs->at(current));
         current = get_current(index, current);
     }
