@@ -117,18 +117,31 @@ bool ConcurrentHashMap::member(std::string key) {
 
 std::pair< std::string, int > ConcurrentHashMap::maximum(unsigned int nt) {
     std::pair< std::string, int> * maximo;
-    int maxCount = 0;
-    for(int i = 0; i<SIZE; i++) {
-        Lista< std::pair < std::string,int >* >::Iterador it = get_list_it(i);
-        while(it.HaySiguiente()) {
-            std::pair< std::string, int>* sig = it.Siguiente();
-            if(sig->second > maxCount) {
-                maximo = sig;
-                maxCount = sig->second;
-            }
-            it.Avanzar();
-        }
+    pthread_t maximun_threads[nt];
+    lock_all_add_and_inc();
+    Lista< std::pair < std::string,int >* >* maximos = new Lista< std::pair < std::string,int >* >();
+    for(int i = 0; i < nt; i++){
+        max_thread_struct data= {this,maximos};
+        pthread_create(&maximun_threads[i],NULL,maximum_t,&data);
     }
+
+    for(int i = 0; i < nt; i++){
+        pthread_join(maximun_threads[i],NULL);
+    }
+    unlock_all_add_and_inc();
+
+    //buscar maximo en la lista    
+    int maxCount = 0;
+    Lista< std::pair < std::string,int >* >::Iterador it = maximos->CrearIt();
+    while(it.HaySiguiente()) {
+        std::pair< std::string, int>* sig = it.Siguiente();
+        if(sig->second > maxCount) {
+            maximo = sig;
+            maxCount = sig->second;
+        }
+        it.Avanzar();
+    }    
+    
     return *maximo;
 }
 

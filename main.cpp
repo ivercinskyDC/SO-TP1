@@ -43,7 +43,7 @@ int main() {
     for (int i = 0; i < 26; i++) {
 		for (auto it = map.map[i]->CrearIt(); it.HaySiguiente(); it.Avanzar()) {
 			auto t = it.Siguiente();
-			cout << char(i+97) << ": " << t->first << " " << t->second << endl;
+			//cout << char(i+97) << ": " << t->first << " " << t->second << endl;
 		}
     }
 
@@ -54,7 +54,12 @@ int main() {
     for (int i = 0; i < 26; i++) {
 		for (auto it = cp2.map[i]->CrearIt(); it.HaySiguiente(); it.Avanzar()) {
 			auto t = it.Siguiente();
-			cout << char(i+97) << ": " << t->first << " " << t->second << endl;
+			//cout << char(i+97) << ": " << t->first << " " << t->second << endl;
 		}
     }
+
+    maximo = cp2.maximum(3);
+    cout << "maximo cp2: "<<maximo.first << " " << maximo.second << endl;
+
+
 }

@@ -55,9 +55,21 @@ class ConcurrentHashMap {
             pthread_mutex_lock(&addAndIncMutex[asciiCode-ASCII_OFFSET]);
          } 
 
+         void lock_all_add_and_inc() {
+             for(int i = 0;i<SIZE;i++) {
+                 pthread_mutex_lock(&addAndIncMutex[i]);
+             }
+         }
+
          void unlock_add_and_inc_mutex(std::string key) {
             int asciiCode = get_hash_key(key);
             pthread_mutex_unlock(&addAndIncMutex[asciiCode-ASCII_OFFSET]);   
+         }
+
+         void unlock_all_add_and_inc() {
+             for(int i = 0;i<SIZE;i++) {
+                 pthread_mutex_unlock(&addAndIncMutex[i]);
+             }
          }
 
         
