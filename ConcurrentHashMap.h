@@ -24,6 +24,7 @@ class ConcurrentHashMap {
     static std::pair< std::string, unsigned int > concurrent_maximum(unsigned int p_archivos, unsigned int p_maximos, std::list<std::string> archs);
     bool member(std::string key);
     void add_and_inc(std::string key);
+    void add_and_inc(std::string key,int amount);
     void process_file(std::string arch);
     
     private:
