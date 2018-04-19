@@ -18,24 +18,25 @@ ConcurrentHashMap::ConcurrentHashMap(std::string arch) : ConcurrentHashMap() {
 
 
 ConcurrentHashMap::ConcurrentHashMap(unsigned int nt, std::list<std::string> archs) : ConcurrentHashMap() {
-    std::atomic<int> index(-1);
+    std::atomic_int index(-1);
     pthread_t threads[nt];
-    //std::cout<<"Lanzando "<<nt<<" threads" <<std::endl;
+    std::cout<<"Lanzando "<<nt<<" threads" <<std::endl;
 
     std::vector<std::string> vector;
-    for (std::list<std::string>::iterator it=archs.begin(); it != archs.end(); ++it) {
+    for (std::list<std::string>::iterator it=archs.begin(); it != archs.end(); ++it)
         vector.push_back(*it);
-    }
+
 
     for(int i = 0; i < nt; i++){
         thread_struct data= {&vector, this, &index};
         pthread_create(&threads[i],NULL,count_words_t,&data);
     }
 
+    std::cout<<"Esperando "<<nt<<" threads" <<std::endl;
     for(int i = 0; i < nt; i++){
         pthread_join(threads[i],NULL);
     }
-    //std::cout<<"Esperando "<<nt<<std::endl;
+
 }
 
 ConcurrentHashMap ConcurrentHashMap::count_words(std::string arch) {
@@ -66,7 +67,7 @@ void ConcurrentHashMap::process_file(std::string arch){
     }
 }
 
-void ConcurrentHashMap::add_and_inc(std::string key) {
+void ConcurrentHashMap::add_and_inc(std::string key, int amount) {
     ///std::cout << "Tratando de Agregar o Incrementar: " << *key << std::endl;
     //UN ARRAY DE MUTEX, UN POR CADA LETRA.
     lock_add_and_inc_mutex(key);
@@ -82,23 +83,28 @@ void ConcurrentHashMap::add_and_inc(std::string key) {
                 //std::cout << "Incrementando: " << *key << ": "<< sig->second<< std::endl;
                 
                 //pthread_mutex_lock(&addAndIncMutex);
-                sig->second++;
+                sig->second += amount;
                 unlock_add_and_inc_mutex(key);
                 return;
         }
         it.Avanzar();
     }
+
     
     //si llego aca es porque no hay una entrada con esa key. Entonces la agregamos.
     //std::cout << "Agregando: " << *key << std::endl;
 
     std::pair< std::string, int>* nuevo = new std::pair< std::string, int>();
     nuevo->first = key;
-    nuevo->second = 1;
+    nuevo->second = amount;
     listOfLetter->push_front(nuevo);
     unlock_add_and_inc_mutex(key);
-    
 }
+    
+void ConcurrentHashMap::add_and_inc(std::string key) {
+    add_and_inc(key,1);
+}
+
 
 bool ConcurrentHashMap::member(std::string key) {
     Lista< std::pair < std::string,int >* >* listOfLetter = get_lista(key);
@@ -137,7 +143,11 @@ std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p
     std::pair< std::string, int> * maximo;
     std::atomic_int index(-1);
     pthread_t threads_archivos[p_archivos];
-    ConcurrentHashMap* hashMaps[p_archivos]; //chequear si los inicializa creemos que no
+    ConcurrentHashMap* hashMaps[p_archivos];
+    for(int i = 0; i < p_archivos;i++)
+        hashMaps[i] = new ConcurrentHashMap();
+
+    std::cout<<hashMaps[0]->map[1]<<std::endl;
 
 
     std::vector<std::string> vector;
@@ -145,9 +155,10 @@ std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p
         vector.push_back(*it);
 
 
+    thread_struct data[p_archivos];
     for(int i = 0; i < p_archivos; i++){
-        thread_struct data= {&vector, hashMaps[i], &index};
-        pthread_create(&threads_archivos[i],NULL,create_concurrent_hash_map,&data);
+        data[i] = {&vector, hashMaps[i], &index};
+        pthread_create(&threads_archivos[i],NULL,create_concurrent_hash_map,&(data[i]));
     }
 
     for(int i = 0; i < p_archivos; i++){
@@ -157,20 +168,20 @@ std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p
     ConcurrentHashMap hashMap = ConcurrentHashMap();
     for(int k = 0; k<p_archivos;k++) {
         for(int j = 0 ; j< SIZE; j++) {
-            Lista< std::pair < std::string,int >* >::Iterador it = hashMaps[j]->map[j]->CrearIt();
+            Lista< std::pair < std::string,int >* >::Iterador it = hashMaps[k]->map[j]->CrearIt();
             while(it.HaySiguiente()) {
                 std::pair<std::string,int> * elem = it.Siguiente();
-                hashMap.add_and_inc(elem->first);
+                hashMap.add_and_inc(elem->first,elem->second);
                 it.Avanzar();
             }
         }
     }
-
     return hashMap.maximum(p_maximos);
 }
 
 std::pair< std::string, unsigned int > ConcurrentHashMap::concurrent_maximum(unsigned int p_archivos, unsigned int p_maximos,
  std::list<std::string> archs) {
+    
     return ConcurrentHashMap(p_archivos,archs).maximum(p_maximos);
 }
 

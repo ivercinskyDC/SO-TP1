@@ -39,11 +39,11 @@ int main() {
     pthread_mutex_destroy(&semaforo);
     cout<<"Done Adding"<<endl;
     pair< string, int > maximo = map.maximum(1);
-    cout << "Maximo: "<< maximo.first << ", " << maximo.second << endl;
+    //cout << "Maximo: "<< maximo.first << ", " << maximo.second << endl;
     for (int i = 0; i < 26; i++) {
 		for (auto it = map.map[i]->CrearIt(); it.HaySiguiente(); it.Avanzar()) {
 			auto t = it.Siguiente();
-			cout << char(i+97) << ": " << t->first << " " << t->second << endl;
+			//cout << char(i+97) << ": " << t->first << " " << t->second << endl;
 		}
     }
 
@@ -54,7 +54,12 @@ int main() {
     for (int i = 0; i < 26; i++) {
 		for (auto it = cp2.map[i]->CrearIt(); it.HaySiguiente(); it.Avanzar()) {
 			auto t = it.Siguiente();
-			cout << char(i+97) << ": " << t->first << " " << t->second << endl;
+		//	cout << char(i+97) << ": " << t->first << " " << t->second << endl;
 		}
     }
+
+    pair< string, int > max = ConcurrentHashMap::maximum(2,2,{"pepe","pepa"});
+    cout<<"maximum: "<<max.first<<" "<<max.second<<endl;
+    
+
 }

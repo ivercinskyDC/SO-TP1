@@ -60,8 +60,17 @@ void *maximum_t(void *args) {
 }
 
 void *create_concurrent_hash_map(void * args){
-    // thread_struct* data=(thread_struct*) args;
-    // data->
+    thread_struct* data=(thread_struct*) args;
+    std::vector<std::string>* archs = data->archs;
+    std::atomic_int* index = data->index;
+    ConcurrentHashMap* hm = data->map;
+
+    int current = get_current(index, -1);
+
+    while(current < archs->size()){
+        hm->process_file(archs->at(current));
+        current = get_current(index, current);
+    }
     pthread_exit(0);
 }
 
