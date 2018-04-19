@@ -5,3 +5,4 @@ main
 corpus*
 corpus.awk
 *.o
+.DS_store
