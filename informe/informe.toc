@@ -1,0 +1,9 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{3}
+\contentsline {section}{\numberline {2}Desarrollo}{4}
+\contentsline {subsection}{\numberline {2.1}Dise\IeC {\~n}o}{4}
+\contentsline {subsection}{\numberline {2.2}Decisiones de implementacion}{4}
+\contentsline {section}{\numberline {3}Resultados}{5}
+\contentsline {subsection}{\numberline {3.1}Tests}{5}
+\contentsline {subsection}{\numberline {3.2}Tiempos de ejecucion}{5}
+\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{6}

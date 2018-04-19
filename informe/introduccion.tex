@@ -1,0 +1,23 @@
+\section{Introducción}
+
+
+El motivo de este trabajo practico es implementar un diccionario que funciona
+sobre una tabla de hash.
+Esta implementacion sera de alta eficiencia y permitira accesos simultaneos
+manteniendo la consistencia de los datos, es decir, sera concurrente.
+
+
+El diccionario solo toma strings como claves y se guarda el string con un valor entero
+que indica la cantidad de inserciones de dicho string, la funcion
+de hash utilizada consiste en simplemente tomar la primera letra del string
+a guardar. para las colisiones se utiliza una lista enlazada en cada letra
+del diccionarion(los resultados de la funcion de hash),
+donde las palabras nuevas se van agregando al final con
+su valor inicial de 1.
+
+
+A continuacion se marcan las ideas iniciales y las decisiones de implementacion
+tomadas a lo largo del tp y finalmente se muestra una breve experimentacion
+para probar el funcionamiento correcto del codigo y mediciones de tiempo respecto
+a la funcion maximo la cual fue implementada de forma concurrente y tanbien
+de forma no concurrente.
