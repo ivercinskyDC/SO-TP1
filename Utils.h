@@ -59,6 +59,7 @@ void *maximum_t(void *args) {
 
     int current = get_current(index);
     while(current < SIZE){
+        
         Lista< std::pair < std::string,int >* >* letraI = map->map[current];
         Lista< std::pair < std::string,int >* >::Iterador it = letraI->CrearIt();
         while(it.HaySiguiente()) {

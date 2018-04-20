@@ -136,7 +136,6 @@ std::pair< std::string, int > ConcurrentHashMap::maximum(unsigned int nt) {
     }
     unlock_all_add_and_inc();
 
-
     Lista< std::pair < std::string,int >* >::Iterador it = maximos.CrearIt();
     std::pair< std::string, int >* maximo = NULL;
     while(it.HaySiguiente()){
