@@ -57,6 +57,9 @@ test-5-run: test-5
 test-time: $(OBJ) test-time.cpp
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ test-time.cpp $(OBJ) $(LDLIBS)
 
+test-threads: $(OBJ) test-threads.cpp
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ test-threads.cpp $(OBJ) $(LDLIBS)
+
 clean:
 	rm -f $(BIN) $(OBJ)
 	rm -f corpus-*

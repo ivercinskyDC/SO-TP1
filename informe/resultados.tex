@@ -1,16 +1,12 @@
 \section{Resultados}
 
 
-\subsection{Tests} %como corren los tests y si hay nuevos
+\subsection{Experimentación Tiempos}
+Se realizó una experimentación que utiliza archivos generados aleatoriamente y compara los resultados de las dos funciones de máximos implementadas.\\
 
-  El codigo implementado pasa todos los tests, se realizo un nuevo test el cual utiliza
-  archivos generados aleatoriamente y compara los resultados de las dos funciones
-  de maximos implementadas.
+Las palabras se generaron utilizando el archivo $gerenador.py$ que se envía junto con el código.\\
 
-  esto tambien cumple la funcion de medir sus tiempos de ejecucion varias veces,
-  este test fue modificado para trabajar con muchos archivos o con pocos y comparar
-  el desempeño de ambos algoritmos, mas adelante
-  se hablara de estas mediciones.
+Para la medición se corrieron 500 veces ambas funciones y se promediaron los tiempos.
 
 \subsubsection{Tiempos de ejecucion} %diferencias entre los 2 maximos
 
@@ -18,28 +14,44 @@
 \includegraphics[width=0.8\textwidth]{imagenes/maxvsmax.png}
 \end{center}
 
-en este grafico se puede ver la comparacion entre las dos implementaciones de maximo funcionando
-para 5 archivos con 5 threads, se puede ver claramente que la implementacion concurrente
-es mas del doble de rapida.
+En este grafico se puede ver la comparación entre las dos implementaciones de maximo funcionando
+para 5 archivos con 5 threads. Se puede ver claramente que la implementación concurrente
+es más del doble de rapida.
 
 \begin{center}
 \includegraphics[width=0.8\textwidth]{imagenes/descplot.png}
 \end{center}
 
-en esta tabla se pueden ver los valores mas estadisticos de la comparacion, se
-corrieron aproximadamente mil veces los algoritmos para este caso.
-
+En esta tabla se pueden ver los valores estádisticos de la comparación. Se
+corrieron mil veces los algoritmos para este caso.
 
 \begin{center}
 \includegraphics[width=0.8\textwidth]{imagenes/maxvsmax1thread.png}
 \end{center}
 
-Aqui se puede ver la comparacion de ambos para 11 archivos con 1 solo thread. la diferencia es menor
-pero igualmente es claro que la implementacion concurrente es mejor
+Aquí se puede ver la comparación de ambos para 11 archivos con 1 solo thread.\\
+Este resultado a priori es extraño ya que ambas se ejecutan de forma no concurrente. Sin embargo, al tener en cuenta que la versión no concurrente crea un hashmap para luego pasarlo a otro hashmap y ahí calcular el máximo, tiene sentido pensar que pueda haber demorado mayor cantidad de tiempo que su equivalente concurrente.
 
 \begin{center}
 \includegraphics[width=0.8\textwidth]{imagenes/descplot2.png}
 \end{center}
 
-en esta tabla se pueden ver los valores mas estadisticos de la comparacion, en este caso
-los algorimos se corrieron aproximadamente quinientas veces.
+En esta tabla se pueden ver los valores estadísticos de la comparación, en este caso
+los algorimos se corrieron 500 veces.
+
+\subsection{Experimentación Threads}
+
+Además, se realizó una experimentación corriendo ambas instancias variando la cantidad de threads con 1 $\leq n \geq 10$.
+Ambas implementaciones se corrieron 500 veces para cada $n$ y se promediaron los tiempos arrojando los siguientes resultados:
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{imagenes/threads.png}
+\end{center}
+
+Donde el verde representa a la versión concurrente y el azul a la no concurrente.
+
+Como esperabamos, encontramos que la versión concurrente arroja tiempos menores que su contraparte no concurrente. Sin embargo, se puede observar que al aumentar los threads no mejora los tiempos significativamente, de hecho en algunos casos los empeora. Esto podría tratarse a que al agregar palabras en la estructura se bloquean con un mutex las listas, haciendo mayores los tiempos de espera al haber muchos threads.
+
+Por otro lado, a simple vista parece haber una correlación entre los tiempos.
+
+

@@ -10,8 +10,8 @@
 \contentsline {subsubsection}{\numberline {2.2.5}add_and_inc(std::string key, int amount)}{5}
 \contentsline {subsubsection}{\numberline {2.2.6}ConcurrentHashMap::member(std::string key)}{5}
 \contentsline {subsubsection}{\numberline {2.2.7}ConcurrentHashMap::maximum(unsigned int nt)}{5}
-\contentsline {subsection}{\numberline {2.3}Decisiones de implementacion}{5}
 \contentsline {section}{\numberline {3}Resultados}{6}
-\contentsline {subsection}{\numberline {3.1}Tests}{6}
+\contentsline {subsection}{\numberline {3.1}Experimentaci\IeC {\'o}n Tiempos}{6}
 \contentsline {subsubsection}{\numberline {3.1.1}Tiempos de ejecucion}{6}
-\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{9}
+\contentsline {subsection}{\numberline {3.2}Experimentaci\IeC {\'o}n Threads}{8}
+\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{10}
