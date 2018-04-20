@@ -17,7 +17,7 @@ struct  {
 
 struct {
     ConcurrentHashMap* map;
-    std::vector<std::pair< std::string, int>*>* maximos;
+    std::vector<std::pair< std::string, int>>* maximos;
     std::atomic_int* index;
 } typedef max_thread_struct;
 
@@ -55,19 +55,21 @@ void *maximum_t(void *args) {
     max_thread_struct* data=(max_thread_struct*) args;
     ConcurrentHashMap* map = data->map;
     std::atomic_int* index = data->index;
-    std::pair < std::string,int >* maximo = NULL;
+    std::pair < std::string,int > maximo;
 
     int current = get_current(index);
     while(current < SIZE){
+        
         Lista< std::pair < std::string,int >* >* letraI = map->map[current];
         Lista< std::pair < std::string,int >* >::Iterador it = letraI->CrearIt();
         while(it.HaySiguiente()) {
             std::pair< std::string, int>* sig = it.Siguiente();
-            if(maximo == NULL || sig->second > maximo->second) {
-                maximo = sig;
+            if(sig->second > maximo.second) {
+                maximo = *sig;
             }
             it.Avanzar();
         }
+        
         data->maximos->push_back(maximo);
         current = get_current(index);
     }
