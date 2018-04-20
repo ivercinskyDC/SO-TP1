@@ -58,7 +58,9 @@ int main() {
 		}
     }
 
-    pair< string, int > max = ConcurrentHashMap::maximum(2,2,{"pepe","pepa"});
+    cout<<"test maximo"<<endl;
+
+    pair< string, int > max = ConcurrentHashMap::maximum(1,2,{"pepe","pepa"});
     cout<<"maximum: "<<max.first<<" "<<max.second<<endl;
     
 
