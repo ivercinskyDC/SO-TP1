@@ -20,12 +20,14 @@ struct {
     Lista< std::pair < std::string,int >* >* maximos;
 } typedef max_thread_struct;
 
-int get_current(std::atomic_int* index, int current){
-    while(!index->compare_exchange_strong(current, current+1)){
-            current = index->load();
-    };
-    //current++;
-    return *index;
+struct  {
+    ConcurrentHashMap* hm;
+    std::vector<ConcurrentHashMap*>* hashMaps;
+    std::atomic_int* index;
+} typedef merge_struct;
+
+int get_current(std::atomic_int* index){
+    return ++(*index);
 }
 
 void *count_words_t(void *args) {
@@ -34,7 +36,7 @@ void *count_words_t(void *args) {
     ConcurrentHashMap* map = data->map;
     std::atomic_int* index = data->index;
 
-    int current = get_current(index, -1);
+    int current = get_current(index);
     
     //std::cout<<"Getting: "<<current<<std::endl;
     //std::cout<<"archs: "<<archs->size()<<std::endl;
@@ -42,7 +44,7 @@ void *count_words_t(void *args) {
     while(current < archs->size()){
         //std::cout<<"Processing File: "<<archs->at(current)<<std::endl;
         map->process_file(archs->at(current));
-        current = get_current(index, current);
+        current = get_current(index);
     }
     
     pthread_exit(0);
@@ -77,14 +79,36 @@ void *create_concurrent_hash_map(void * args){
     std::atomic_int* index = data->index;
     ConcurrentHashMap* hm = data->map;
 
-    int current = get_current(index, -1);
+    int current = get_current(index);
+
 
     while(current < archs->size()){
         hm->process_file(archs->at(current));
-        current = get_current(index, current);
+        current = get_current(index);
     }
     pthread_exit(0);
 }
 
+
+void *merge_hash_maps(void * args){
+    merge_struct* data=(merge_struct*) args;
+    std::atomic_int* index = data->index;
+    ConcurrentHashMap* hm = data->hm;
+    std::vector<ConcurrentHashMap*>* hashMaps = data->hashMaps;
+
+    int current = get_current(index);
+    while(current < SIZE){
+        for(int i = 0; i < hashMaps->size();i++){
+            Lista< std::pair < std::string,int >* >::Iterador it = (*hashMaps)[i]->map[current]->CrearIt();
+            while(it.HaySiguiente()) {
+                std::pair<std::string,int> * elem = it.Siguiente();
+                hm->add_and_inc(elem->first,elem->second);
+                it.Avanzar();
+            }
+        } 
+        current = get_current(index);
+    }
+    pthread_exit(0);
+}
 
 #endif
