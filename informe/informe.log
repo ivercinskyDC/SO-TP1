@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.10.11)  19 APR 2018 17:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.10.28)  20 APR 2018 15:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -537,7 +537,29 @@ Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
 \NC@list=\toks33
 \extratabsurround=\skip51
 \backup@length=\skip52
-) (./page.layout.tex
+) (./codesnippet.tex
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2016/01/03 v1.1b Standard LaTeX Color (DPC)
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 143.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fancybox/fancybox.sty
+Package: fancybox 2010/05/15 1.4
+
+Style option: `fancybox' v1.4 <2010/05/15> (tvz)
+\@fancybox=\box33
+\shadowsize=\dimen121
+\@Sbox=\box34
+\do@VerbBox=\toks34
+\the@fancyput=\toks35
+\this@fancyput=\toks36
+\EndVerbatimTokens=\toks37
+\Verbatim@Outfile=\write3
+\Verbatim@Infile=\read1
+)) (./page.layout.tex
 (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
@@ -555,15 +577,15 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@cnth=\count114
 \Gm@cntv=\count115
 \c@Gm@tempcnt=\count116
-\Gm@bindingoffset=\dimen121
-\Gm@wd@mp=\dimen122
-\Gm@odd@mp=\dimen123
-\Gm@even@mp=\dimen124
-\Gm@layoutwidth=\dimen125
-\Gm@layoutheight=\dimen126
-\Gm@layouthoffset=\dimen127
-\Gm@layoutvoffset=\dimen128
-\Gm@dimlist=\toks34
+\Gm@bindingoffset=\dimen122
+\Gm@wd@mp=\dimen123
+\Gm@odd@mp=\dimen124
+\Gm@even@mp=\dimen125
+\Gm@layoutwidth=\dimen126
+\Gm@layoutheight=\dimen127
+\Gm@layouthoffset=\dimen128
+\Gm@layoutvoffset=\dimen129
+\Gm@dimlist=\toks38
 )
 (/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 \fancy@headwidth=\skip53
@@ -603,16 +625,16 @@ LaTeX Info: Redefining \% on input line 28.
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count117
-\scratchdimen=\dimen129
-\scratchbox=\box33
+\scratchdimen=\dimen130
+\scratchbox=\box35
 \nofMPsegments=\count118
 \nofMParguments=\count119
-\everyMPshowfont=\toks35
+\everyMPshowfont=\toks39
 \MPscratchCnt=\count120
-\MPscratchDim=\dimen130
+\MPscratchDim=\dimen131
 \MPnumerator=\count121
 \makeMPintoPDFobject=\count122
-\everyMPtoPDFconversion=\toks36
+\everyMPtoPDFconversion=\toks40
 ) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -754,8 +776,8 @@ imagenes/logouba.jpg>] (./informe.toc
 LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
 )
-\tf@toc=\write3
-\openout3 = `informe.toc'.
+\tf@toc=\write4
+\openout4 = `informe.toc'.
 
 LaTeX Info: Redefining \. on input line 41.
 LaTeX Info: Redefining \% on input line 41.
@@ -771,17 +793,128 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [2] (./introduccion.tex)
 LaTeX Info: Redefining \. on input line 44.
 LaTeX Info: Redefining \% on input line 44.
- [3] (./desarrollo.tex)
+ [3] (./desarrollo.tex
+Underfull \hbox (badness 10000) in paragraph at lines 13--14
+
+ []
+
+
+Overfull \hbox (8.78pt too wide) in paragraph at lines 16--20
+[][][][][][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 16--20
+
+ []
+
+
+Overfull \hbox (8.78pt too wide) in paragraph at lines 22--28
+[][][][][][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 22--28
+
+ []
+
+
+Overfull \hbox (8.78pt too wide) in paragraph at lines 30--47
+[][][][][][] 
+ []
+
+
+Overfull \hbox (8.78pt too wide) in paragraph at lines 30--47
+[][][][][][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 30--47
+
+ []
+
+
+Overfull \hbox (8.78pt too wide) in paragraph at lines 52--60
+[][][][][][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--60
+
+ []
+
+LaTeX Info: Redefining \. on input line 60.
+LaTeX Info: Redefining \% on input line 60.
+[4]
+Overfull \hbox (40.41125pt too wide) in paragraph at lines 73--73
+[]         \T1/cmtt/m/n/10 -declara una ListaAtomica de pares y un atomico que 
+va a ser el indice en los threads[]  
+ []
+
+
+Overfull \hbox (8.78pt too wide) in paragraph at lines 65--85
+[][][][][][] 
+ []
+
+
+Overfull \hbox (8.78pt too wide) in paragraph at lines 65--85
+[][][][][][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 65--85
+
+ []
+
+)
 LaTeX Info: Redefining \. on input line 46.
 LaTeX Info: Redefining \% on input line 46.
- [4] (./resultados.tex)
+LaTeX Info: Redefining \. on input line 46.
+LaTeX Info: Redefining \% on input line 46.
+ [5] (./resultados.tex
+<imagenes/maxvsmax.png, id=26, 387.4475pt x 262.9825pt>
+File: imagenes/maxvsmax.png Graphic file (type png)
+
+<use imagenes/maxvsmax.png>
+Package pdftex.def Info: imagenes/maxvsmax.png used on input line 18.
+(pdftex.def)             Requested size: 362.37598pt x 245.96762pt.
+
+<imagenes/descplot.png, id=28, 433.62pt x 289.08pt>
+File: imagenes/descplot.png Graphic file (type png)
+
+<use imagenes/descplot.png>
+Package pdftex.def Info: imagenes/descplot.png used on input line 26.
+(pdftex.def)             Requested size: 362.37598pt x 241.59486pt.
+LaTeX Info: Redefining \. on input line 27.
+LaTeX Info: Redefining \% on input line 27.
+ [6 <./imagenes/maxvsmax.png>]
+<imagenes/maxvsmax1thread.png, id=33, 383.4325pt x 262.9825pt>
+File: imagenes/maxvsmax1thread.png Graphic file (type png)
+
+<use imagenes/maxvsmax1thread.png>
+Package pdftex.def Info: imagenes/maxvsmax1thread.png used on input line 34.
+(pdftex.def)             Requested size: 362.37598pt x 248.55588pt.
+
+<imagenes/descplot2.png, id=34, 433.62pt x 289.08pt>
+File: imagenes/descplot2.png Graphic file (type png)
+
+<use imagenes/descplot2.png>
+Package pdftex.def Info: imagenes/descplot2.png used on input line 41.
+(pdftex.def)             Requested size: 362.37598pt x 241.59486pt.
+LaTeX Info: Redefining \. on input line 42.
+LaTeX Info: Redefining \% on input line 42.
+LaTeX Info: Redefining \. on input line 42.
+LaTeX Info: Redefining \% on input line 42.
+ [7 <./imagenes/descplot.png> <./imagenes/maxvsmax1thread.png>])
 LaTeX Info: Redefining \. on input line 48.
 LaTeX Info: Redefining \% on input line 48.
- [5]
-(./conclusion.tex)
+LaTeX Info: Redefining \. on input line 48.
+LaTeX Info: Redefining \% on input line 48.
+ [8 <./imagenes/descplot2.png>] (./conclusion.tex)
 LaTeX Info: Redefining \. on input line 51.
 LaTeX Info: Redefining \% on input line 51.
- [6] (./informe.aux
+ [9]
+(./informe.aux
 LaTeX Info: Redefining \. on input line 7.
 LaTeX Info: Redefining \% on input line 7.
 )
@@ -790,23 +923,24 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 6023 strings out of 494891
- 78659 string characters out of 6179038
- 150038 words of memory out of 5000000
- 9163 multiletter control sequences out of 15000+600000
- 35790 words of font info for 47 fonts, out of 8000000 for 9000
+ 6282 strings out of 494891
+ 82266 string characters out of 6179038
+ 159488 words of memory out of 5000000
+ 9406 multiletter control sequences out of 15000+600000
+ 37475 words of font info for 48 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
- 38i,10n,43p,237b,414s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc} </home/talonso/.t
-exmf-var/fonts/pk/ljfour/jknappen/ec/ecss1000.600pk> </home/talonso/.texmf-var/
-fonts/pk/ljfour/jknappen/ec/ectt1000.600pk></usr/share/texlive/texmf-dist/fonts
-/type1/bitstrea/charter/bchb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/b
-itstrea/charter/bchr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/bitstrea/
-charter/bchr8a.pfb>
-Output written on informe.pdf (6 pages, 410798 bytes).
+ 38i,11n,43p,325b,485s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/
+fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/t
+ype1/bitstrea/charter/bchb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/bit
+strea/charter/bchr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/bitstrea/ch
+arter/bchr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmmi10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss1000.pfb></usr/sha
+re/texmf/fonts/type1/public/cm-super/sftt1000.pfb>
+Output written on informe.pdf (9 pages, 511897 bytes).
 PDF statistics:
- 91 PDF objects out of 1000 (max. 8388607)
- 32 compressed objects within 1 object stream
+ 71 PDF objects out of 1000 (max. 8388607)
+ 43 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

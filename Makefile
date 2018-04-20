@@ -20,14 +20,14 @@ ListaAtomica.o: ListaAtomica.hpp
 ConcurrentHashMap.o:ConcurrentHashMap.cpp Utils.h
 	$(CXX) $(CXXFLAGS) -c $<
 
-main: clean $(OBJ) main.cpp
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) main.cpp $(OBJ) $(LDLIBS) -o $@ 
+main: $(OBJ) main.cpp
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) main.cpp $(OBJ) $(LDLIBS) -o $@
 
 $(BIN): ListaAtomica.hpp
 
 test-2: $(OBJ) test-2.cpp
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ test-2.cpp $(OBJ) $(LDLIBS)
-	
+
 test-2-run: test-2
 	awk -f corpus.awk corpus | sort >corpus-post
 	./test-2 | sort | diff -u - corpus-post
