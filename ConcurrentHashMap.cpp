@@ -120,33 +120,38 @@ bool ConcurrentHashMap::member(std::string key) {
 }
 
 std::pair< std::string, int > ConcurrentHashMap::maximum(unsigned int nt) {
-    std::vector<std::pair<std::string, int>*> maximos;
+    Lista<std::pair<std::string, int>*> maximos;
     std::atomic_int index(-1);
-    pthread_t maximun_threads[nt];
+    pthread_t maximum_threads[nt];
+    max_thread_struct data[nt];
+
     lock_all_add_and_inc();
     for(int i = 0; i < nt; i++){
-        max_thread_struct data= {this,&maximos,&index};
-        pthread_create(&maximun_threads[i],NULL,maximum_t,&data);
+        data[i] = {this,&maximos,&index};
+        pthread_create(&maximum_threads[i],NULL,maximum_t,&(data[i]));
     }
 
     for(int i = 0; i < nt; i++){
-        pthread_join(maximun_threads[i],NULL);
+        pthread_join(maximum_threads[i],NULL);
     }
     unlock_all_add_and_inc();
 
 
-    std::pair< std::string, int>* maximo = maximos[0];
-    for(int i = 0; i < maximos.size(); i++){
-        if(maximos[i]->second > maximo->second)
-            maximo = maximos[i];
+    Lista< std::pair < std::string,int >* >::Iterador it = maximos.CrearIt();
+    std::pair< std::string, int >* maximo = NULL;
+    while(it.HaySiguiente()){
+        std::pair< std::string, int>* sig = it.Siguiente();
+        if(maximo == NULL || sig->second > maximo->second) {
+                maximo = sig;
+        }
+        it.Avanzar();
     }
-    
+
     return *maximo;
 }
 
 std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p_archivos, unsigned int p_maximos,
  std::list<std::string> archs) {
-    std::pair< std::string, int> * maximo;
     std::atomic_int index(-1);
     pthread_t threads_archivos[p_archivos];
     std::vector<ConcurrentHashMap*> hashMaps;
@@ -182,7 +187,7 @@ std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p
     for(int i = 0; i < p_merge; i++){
         pthread_join(threads_merge[i],NULL);
     }
-
+//    std::cout<<"1"<<std::endl;
     return hashMap->maximum(p_maximos);
 }
 
