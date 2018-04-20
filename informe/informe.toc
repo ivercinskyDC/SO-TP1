@@ -15,5 +15,5 @@
 \contentsline {section}{\numberline {3}Resultados}{7}
 \contentsline {subsection}{\numberline {3.1}Experimentaci\IeC {\'o}n Tiempos}{7}
 \contentsline {subsubsection}{\numberline {3.1.1}Tiempos de ejecucion}{7}
-\contentsline {subsection}{\numberline {3.2}Experimentaci\IeC {\'o}n Threads}{9}
-\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{11}
+\contentsline {subsection}{\numberline {3.2}Experimentaci\IeC {\'o}n Threads}{8}
+\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{10}
