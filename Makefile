@@ -9,7 +9,7 @@ LDLIBS = -lpthread
 .cpp.o:
 	$(CXX) $(CXXFLAGS) -c $<
 
-BIN = test-2 test-3 test-5
+BIN = test-2 test-3 test-5 main test-time
 OBJ = ConcurrentHashMap.o
 
 all: $(BIN)
@@ -53,6 +53,9 @@ test-5-run: test-5
 		./test-5 $$((i + 1)) $$((j + 1)) | diff -u - corpus-max; \
 	done; done
 	rm -f corpus-max corpus-[0-4]
+
+test-time: $(OBJ) test-time.cpp
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ test-time.cpp $(OBJ) $(LDLIBS)
 
 clean:
 	rm -f $(BIN) $(OBJ)
