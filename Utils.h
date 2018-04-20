@@ -21,7 +21,6 @@ struct {
     std::atomic_int* index;
 } typedef max_thread_struct;
 
-
 struct  {
     ConcurrentHashMap* hm;
     std::vector<ConcurrentHashMap*>* hashMaps;
