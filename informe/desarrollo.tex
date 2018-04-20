@@ -10,7 +10,7 @@ A su vez, sus elementos se leen usando la función $load$ para así obtener el d
 
 La estructura $ConcurrentHashMap$ cuenta con un arreglo de listas atómicas representando cada una de las letras del alfabeto. Además cuenta con un arreglo de mutex con un mutex por letra. 
 
-se implementaron los siguientes constructores y funciones:\\
+Se implementaron los siguientes constructores y funciones:\\
 
 \subsubsection{ConcurrentHashMap()}
 \begin{codesnippet}
@@ -34,9 +34,9 @@ Crea un ConcurrentHashMap de forma concurrente corriendo $nt$ threads en paralel
  ConcurrentHashMap(int nt, list<string> archs)
  	-Inicializar 26 listas atómicas.
  	-Inicializar los 26 mutex.
- 	-declarar atomico para el indice de las listas
- 	-lanzar nt threads
- 	-esperar la finalización de los threads
+ 	-declarar atomico para el indice de las listas.
+ 	-Lanzar nt threads.
+ 	-Esperar la finalización de los threads.
 \end{codesnippet}\\
 Para esto se utiliza una variable atómica inicializada en -1 que va a representar el indice en la lista de archivos.
 Cada uno de los threads, pide un índice y mientras luego procesa el íesimo archivo\\
@@ -54,11 +54,11 @@ Procesa las palabras de cada archivo y las agrega al ConcurrentHashMap llamando 
 \subsubsection{add_and_inc(std::string key, int amount)}
 Esta función se fija si la palabra procesada ya se encuentra en la estructura y aumenta su valor. En caso de no estar creada, la crea. Antes de comenzar lockea el mutex de la lista.\\
 \begin{codesnippet}
- 	-lockea el mutex correspondiente a la letra de la palabra.
- 	-recorre la lista correspondiente para ver si existe la palabra.
- 	-si existe, incrementa su valor en amount.
- 	-si no existe la palabra, crea el par para la palabra y lo agrega a la lista.
- 	-libera el mutex correspondiente a la letra de la palabra.
+ 	-Lockea el mutex correspondiente a la letra de la palabra.
+ 	-Recorre la lista correspondiente para ver si existe la palabra.
+ 	-Si existe, incrementa su valor en amount.
+ 	-Si no existe la palabra, crea el par para la palabra y lo agrega a la lista.
+ 	-Libera el mutex correspondiente a la letra de la palabra.
 \end{codesnippet}\\
 
 \subsubsection{ConcurrentHashMap::member(std::string key)}
@@ -67,12 +67,12 @@ Devuelve un booleano indicando si la palabra indicada está presente en la estru
 \subsubsection{ConcurrentHashMap::maximum(unsigned int nt)}
 Calcula cual es la palabra que aparece con más repeticiones en la estructura, corriendo concurrentemente en $nt$ threads.\\
 \begin{codesnippet}
- 	-declara una ListaAtomica de pares y un atomico que va a ser el indice en los threads
- 	-lockea los mutex de todas las letras
+ 	-Declara una ListaAtomica de pares y un atomico que va a ser el indice en los threads
+ 	-Lockea los mutex de todas las letras.
  	(para que nadie pueda agregar palabras mientras se calcula un máximo)
- 	-lanza nt threads, cada uno agregara sus máximos a la lista atómica.
- 	-espera la finalización de los nt threads.
- 	-recorre la lista de máximos y devuelve el mayor
+ 	-Lanza nt threads, cada uno agregara sus máximos a la lista atómica.
+ 	-Espera la finalización de los nt threads.
+ 	-recorre la lista de máximos y devuelve el mayor.
 \end{codesnippet}\\
 Cada uno de los threads funciona de la siguiente manera:\\
 \begin{codesnippet}

@@ -174,7 +174,7 @@ std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p
 
 
     ConcurrentHashMap* hashMap = new ConcurrentHashMap();
-    unsigned int p_merge = 27; //cantidad de letras, se puede modificar
+    unsigned int p_merge = 1; //cantidad de letras, se puede modificar
     pthread_t threads_merge[p_merge];
     merge_struct data_merge[p_merge];
     std::atomic_int letra(-1);

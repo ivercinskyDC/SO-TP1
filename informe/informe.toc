@@ -13,6 +13,7 @@
 \contentsline {subsubsection}{\numberline {2.2.8}ConcurrentHashMap::maximum(int p\_archivos,int p_maximos, list<string> archs)}{5}
 \contentsline {subsubsection}{\numberline {2.2.9}ConcurrentHashMap::concurrent_maximum(int p_archivos, int p_maximos, list<string> archs)}{6}
 \contentsline {section}{\numberline {3}Resultados}{7}
-\contentsline {subsection}{\numberline {3.1}Tests}{7}
-\contentsline {subsection}{\numberline {3.2}Tiempos de ejecucion}{7}
-\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{8}
+\contentsline {subsection}{\numberline {3.1}Experimentaci\IeC {\'o}n Tiempos}{7}
+\contentsline {subsubsection}{\numberline {3.1.1}Tiempos de ejecucion}{7}
+\contentsline {subsection}{\numberline {3.2}Experimentaci\IeC {\'o}n Threads}{9}
+\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{11}
