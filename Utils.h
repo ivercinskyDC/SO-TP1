@@ -17,7 +17,8 @@ struct  {
 
 struct {
     ConcurrentHashMap* map;
-    Lista< std::pair < std::string,int >* >* maximos;
+    std::vector<std::pair< std::string, int>*>* maximos;
+    std::atomic_int* index;
 } typedef max_thread_struct;
 
 
@@ -54,24 +55,25 @@ void *count_words_t(void *args) {
 void *maximum_t(void *args) {
     max_thread_struct* data=(max_thread_struct*) args;
     ConcurrentHashMap* map = data->map;
-    Lista< std::pair < std::string,int >* >* maximos = data->maximos;
-    std::pair < std::string,int >* maximo;
-    int maxCount = 0;
-    for(int i = 0; i<SIZE; i++) {
-        Lista< std::pair < std::string,int >* >* letraI = map->map[i];
+    std::atomic_int* index = data->index;
+    std::pair < std::string,int >* maximo = NULL;
+
+    int current = get_current(index);
+    while(current < SIZE){
+        Lista< std::pair < std::string,int >* >* letraI = map->map[current];
         Lista< std::pair < std::string,int >* >::Iterador it = letraI->CrearIt();
         while(it.HaySiguiente()) {
             std::pair< std::string, int>* sig = it.Siguiente();
-            if(sig->second > maxCount) {
+            if(maximo == NULL || sig->second > maximo->second) {
                 maximo = sig;
-                maxCount = sig->second;
             }
             it.Avanzar();
         }
+        data->maximos->push_back(maximo);
+        current = get_current(index);
     }
-    maximos->push_front(maximo);
-    
     pthread_exit(0);
+
 }
 
 void *create_concurrent_hash_map(void * args){

@@ -120,12 +120,12 @@ bool ConcurrentHashMap::member(std::string key) {
 }
 
 std::pair< std::string, int > ConcurrentHashMap::maximum(unsigned int nt) {
-    std::pair< std::string, int> * maximo;
+    std::vector<std::pair<std::string, int>*> maximos;
+    std::atomic_int index(-1);
     pthread_t maximun_threads[nt];
     lock_all_add_and_inc();
-    Lista< std::pair < std::string,int >* >* maximos = new Lista< std::pair < std::string,int >* >();
     for(int i = 0; i < nt; i++){
-        max_thread_struct data= {this,maximos};
+        max_thread_struct data= {this,&maximos,&index};
         pthread_create(&maximun_threads[i],NULL,maximum_t,&data);
     }
 
@@ -134,17 +134,12 @@ std::pair< std::string, int > ConcurrentHashMap::maximum(unsigned int nt) {
     }
     unlock_all_add_and_inc();
 
-    //buscar maximo en la lista    
-    int maxCount = 0;
-    Lista< std::pair < std::string,int >* >::Iterador it = maximos->CrearIt();
-    while(it.HaySiguiente()) {
-        std::pair< std::string, int>* sig = it.Siguiente();
-        if(sig->second > maxCount) {
-            maximo = sig;
-            maxCount = sig->second;
-        }
-        it.Avanzar();
-    }    
+
+    std::pair< std::string, int>* maximo = maximos[0];
+    for(int i = 0; i < maximos.size(); i++){
+        if(maximos[i]->second > maximo->second)
+            maximo = maximos[i];
+    }
     
     return *maximo;
 }
