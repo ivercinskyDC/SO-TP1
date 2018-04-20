@@ -15,15 +15,17 @@ se implementaron los siguientes constructores y funciones:\\
 \subsubsection{ConcurrentHashMap()}
 \begin{codesnippet}
 ConcurrentHashMap()
- 	inicializar 26 listas atómicas.
+ 	-inicializar 26 listas atómicas.
+ 	-inicializar los 26 mutex.
 \end{codesnippet}\\
 
 \subsubsection{ConcurrentHashMap(std::string arch)}
 Crea el ConcurrentHashMap y carga en su estructura el archivo pasado de forma no concurrente.\\
 \begin{codesnippet}
 ConcurrentHashMap(string arch)
- 	Inicializar 26 listas atómicas.
- 	process_file(arch)
+ 	-Inicializar 26 listas atómicas.
+ 	-Inicializar los 26 mutex.
+ 	-process_file(arch)
 \end{codesnippet}\\
 
 \subsubsection{ConcurrentHashMap(unsigned int nt, std::list<std::string> archs)}
@@ -31,6 +33,7 @@ Crea un ConcurrentHashMap de forma concurrente corriendo $nt$ threads en paralel
 \begin{codesnippet}
  ConcurrentHashMap(int nt, list<string> archs)
  	-Inicializar 26 listas atómicas.
+ 	-Inicializar los 26 mutex.
  	-declarar atomico para el indice de las listas
  	-lanzar nt threads
  	-esperar la finalización de los threads
@@ -82,6 +85,42 @@ Cada uno de los threads funciona de la siguiente manera:\\
 
 \end{codesnippet}\\
 % subsubsection concurrenthashmap_maximum_unsigned_int_nt_ (end)
+\subsubsection{ConcurrentHashMap::maximum(int p\_archivos,int p_maximos,
+ list<string> archs)}
+Dada una cantidad de archivos que se procesan en $p\_archivos$ threads, la función devuelve el máximo calculado en $p\_maximos$ threads.
+Esto es realizado creando $p\_archivos$ ConcurrentHashMaps y lanzando un thread por cada hashmap creado.
+Mediante un atómico que indica el indice dentro de la lista de archivos, los distintos hashmaps van procesando en su estructura los archivos.
+Una vez terminado, se mergean todos los ConcurrentHashMaps en un solo ConcurrentHashMap. Esto se logra lanzando una cantidad de threads (en nuestra implementación una por letra del abecedario), donde cada uno de los threads procesa la lista correspondiente a una de las letras en todos los hashmaps, indicada mediante un indice atómico compartido por todos los threads.
+Cuando se obtiene el ConcurrentHashMap con todos los archivos, se llama a la función maximum que devuelve el máximo.\\
+\begin{codesnippet}
+ 	-declara en vector con p_archivos hashmaps
+ 	-lanza los thread en los que se procesan los archivos
+ 	-espera la finalización de los threads.
+ 	-lanza los threads que mergean los p_archivos hashmaps en uno solo.
+ 	-espera la finalización de los threads.
+ 	-llama a la función maximum del ConcurrentHashMap resultante
+\end{codesnippet}\\
+Cada uno de los threads funciona de la siguiente manera:\\
+\begin{codesnippet}
+ 	ThreadProcesarHashmap:
+ 		i = indice.get_and_inc
+ 		mientras i sea menor a la cantidad de archivos
+ 			hm->process_file(archivos(i))
+ 			i = indice.get_and_inc
 
+\end{codesnippet}\\
+\\
+\begin{codesnippet}
+ 	ThreadMergearHashmaps:
+ 		i = indice.get_and_inc
+ 		mientras i sea menor a la cantidad de letras
+ 			por cada hashMap en HashMaps
+ 				por cada elemento de la lista i
+ 					hm.add_and_inc(elem.clave,elem.valor)
+ 			i = indice.get_and_inc
+\end{codesnippet}\\
 
-\subsection{Decisiones de implementacion} %lo que dice ahi
+\subsubsection{ConcurrentHashMap::concurrent_maximum(int p_archivos, int p_maximos,
+list<string> archs)}
+Calcula el maximo de forma concurrente, crea un nuevo ConcurrentHashMap utilizando $p_archivos$ threads para leer los archivos y le calcula el máximo utilizando $p_maximos$ threads.
+

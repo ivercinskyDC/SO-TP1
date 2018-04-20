@@ -6,12 +6,13 @@
 \contentsline {subsubsection}{\numberline {2.2.1}ConcurrentHashMap()}{4}
 \contentsline {subsubsection}{\numberline {2.2.2}ConcurrentHashMap(std::string arch)}{4}
 \contentsline {subsubsection}{\numberline {2.2.3}ConcurrentHashMap(unsigned int nt, std::list<std::string> archs)}{4}
-\contentsline {subsubsection}{\numberline {2.2.4}process_file(std::string arch)}{4}
+\contentsline {subsubsection}{\numberline {2.2.4}process_file(std::string arch)}{5}
 \contentsline {subsubsection}{\numberline {2.2.5}add_and_inc(std::string key, int amount)}{5}
 \contentsline {subsubsection}{\numberline {2.2.6}ConcurrentHashMap::member(std::string key)}{5}
 \contentsline {subsubsection}{\numberline {2.2.7}ConcurrentHashMap::maximum(unsigned int nt)}{5}
-\contentsline {subsection}{\numberline {2.3}Decisiones de implementacion}{5}
-\contentsline {section}{\numberline {3}Resultados}{6}
-\contentsline {subsection}{\numberline {3.1}Tests}{6}
-\contentsline {subsection}{\numberline {3.2}Tiempos de ejecucion}{6}
-\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{7}
+\contentsline {subsubsection}{\numberline {2.2.8}ConcurrentHashMap::maximum(int p\_archivos,int p_maximos, list<string> archs)}{5}
+\contentsline {subsubsection}{\numberline {2.2.9}ConcurrentHashMap::concurrent_maximum(int p_archivos, int p_maximos, list<string> archs)}{6}
+\contentsline {section}{\numberline {3}Resultados}{7}
+\contentsline {subsection}{\numberline {3.1}Tests}{7}
+\contentsline {subsection}{\numberline {3.2}Tiempos de ejecucion}{7}
+\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{8}
