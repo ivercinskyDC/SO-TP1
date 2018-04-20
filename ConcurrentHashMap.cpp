@@ -20,7 +20,7 @@ ConcurrentHashMap::ConcurrentHashMap(std::string arch) : ConcurrentHashMap() {
 ConcurrentHashMap::ConcurrentHashMap(unsigned int nt, std::list<std::string> archs) : ConcurrentHashMap() {
     std::atomic_int index(-1);
     pthread_t threads[nt];
-    std::cout<<"Lanzando "<<nt<<" threads" <<std::endl;
+    // std::cout<<"Lanzando "<<nt<<" threads" <<std::endl;
 
     std::vector<std::string> vector;
     for (std::list<std::string>::iterator it=archs.begin(); it != archs.end(); ++it)
@@ -32,7 +32,7 @@ ConcurrentHashMap::ConcurrentHashMap(unsigned int nt, std::list<std::string> arc
         pthread_create(&threads[i],NULL,count_words_t,&data);
     }
 
-    std::cout<<"Esperando "<<nt<<" threads" <<std::endl;
+    // std::cout<<"Esperando "<<nt<<" threads" <<std::endl;
     for(int i = 0; i < nt; i++){
         pthread_join(threads[i],NULL);
     }
@@ -55,10 +55,8 @@ void ConcurrentHashMap::process_file(std::string arch){
     std::ifstream farch;
     farch.open(arch);
     std::string line;
-    if (farch.is_open())
-    {
-        while ( getline (farch,line) )
-        {
+    if (farch.is_open()){
+        while(getline (farch,line)){
             add_and_inc(line);
         }
         farch.close();
@@ -79,7 +77,7 @@ void ConcurrentHashMap::add_and_inc(std::string key, int amount) {
     
     while(it.HaySiguiente()){
         std::pair< std::string, int>* sig = it.Siguiente();
-        if(sig->first.compare(key)==0) {
+        if(sig->first.compare(key) == 0) {
                 //std::cout << "Incrementando: " << *key << ": "<< sig->second<< std::endl;
                 
                 //pthread_mutex_lock(&addAndIncMutex);
@@ -143,12 +141,9 @@ std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p
     std::pair< std::string, int> * maximo;
     std::atomic_int index(-1);
     pthread_t threads_archivos[p_archivos];
-    ConcurrentHashMap* hashMaps[p_archivos];
+    std::vector<ConcurrentHashMap*> hashMaps;
     for(int i = 0; i < p_archivos;i++)
-        hashMaps[i] = new ConcurrentHashMap();
-
-    std::cout<<hashMaps[0]->map[1]<<std::endl;
-
+        hashMaps.push_back(new ConcurrentHashMap());
 
     std::vector<std::string> vector;
     for (std::list<std::string>::iterator it=archs.begin(); it != archs.end(); ++it)
@@ -165,18 +160,22 @@ std::pair< std::string, unsigned int > ConcurrentHashMap::maximum(unsigned int p
         pthread_join(threads_archivos[i],NULL);
     }
 
-    ConcurrentHashMap hashMap = ConcurrentHashMap();
-    for(int k = 0; k<p_archivos;k++) {
-        for(int j = 0 ; j< SIZE; j++) {
-            Lista< std::pair < std::string,int >* >::Iterador it = hashMaps[k]->map[j]->CrearIt();
-            while(it.HaySiguiente()) {
-                std::pair<std::string,int> * elem = it.Siguiente();
-                hashMap.add_and_inc(elem->first,elem->second);
-                it.Avanzar();
-            }
-        }
+
+    ConcurrentHashMap* hashMap = new ConcurrentHashMap();
+    unsigned int p_merge = 27; //cantidad de letras, se puede modificar
+    pthread_t threads_merge[p_merge];
+    merge_struct data_merge[p_merge];
+    std::atomic_int letra(-1);
+    for(int i = 0; i < p_merge; i++){
+        data_merge[i] = {hashMap, &hashMaps, &letra};
+        pthread_create(&threads_merge[i],NULL,merge_hash_maps,&(data_merge[i]));
     }
-    return hashMap.maximum(p_maximos);
+
+    for(int i = 0; i < p_merge; i++){
+        pthread_join(threads_merge[i],NULL);
+    }
+
+    return hashMap->maximum(p_maximos);
 }
 
 std::pair< std::string, unsigned int > ConcurrentHashMap::concurrent_maximum(unsigned int p_archivos, unsigned int p_maximos,
