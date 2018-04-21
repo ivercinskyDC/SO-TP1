@@ -1,9 +1,6 @@
 \section{Resultados}
 
-En esta seccion se analizará con experimentacion el codigo, en especial el desempeño de las dos implementaciones de máximo, antes de
-evaluar se plantea como hipótesis que la implementacion concurrente de máximo va a trabajar en forma mas rápida que la otra implementación
-por el hecho de que realiza mayor parte del trabajo en forma, justamente, concurrente, aprovechando más los threads disponibles.
-
+En esta seccion se analizará con experimentacion el codigo, en especial el desempe\~no de las dos implementaciones de máximo, antes de evaluar se plantea como hipótesis que la implementacion concurrente de máximo va a ser mas rápida que la otra implementación por el hecho de que cada thread procesa una letra por separado, de está manera no genera contención en el $add\_and\_inc$. En el otro caso el ingreso de las palabras es aleatorio y no se puede asegurar que no se genere contención.
 
 A continuación se pasa a experimentar para corroborar esta hipótesis.
 
